@@ -67,5 +67,10 @@ public class LineasproductoEntity implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public boolean isIncorrectData() {
+		return getNombre() ==null 
+				|| getFechacreacion() == null; 
+	}
 
 }
