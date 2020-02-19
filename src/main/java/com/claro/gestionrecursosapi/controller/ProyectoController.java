@@ -1,5 +1,7 @@
 package com.claro.gestionrecursosapi.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,35 +14,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.claro.gestionrecursosapi.application.PersonaApplication;
-import com.claro.gestionrecursosapi.domain.IPersonaService;
-import com.claro.gestionrecursosapi.entity.PersonaEntity;
-import com.claro.gestionrecursosapi.excepcion.DataIncorrectaExcepcion;
-import com.claro.gestionrecursosapi.excepcion.NoExisteExcepcion;
-import com.claro.gestionrecursosapi.excepcion.YaExisteExcepcion;
+import com.claro.gestionrecursosapi.domain.ProyectoService;
+import com.claro.gestionrecursosapi.entity.ProyectoEntity;
 import com.claro.gestionrecursosapi.model.RespuestaBase;
 import com.claro.gestionrecursosapi.model.RespuestaCustomizada;
 
 @RestController
-@RequestMapping("/api/v1/persona")
-public class PersonaController {
+@RequestMapping("/api/v1/proyecto")
+public class ProyectoController {
 
 	@Autowired
-	private IPersonaService personaService;
-	@Autowired
-	private PersonaApplication personaApplication;
+	private ProyectoService service;
 
 	@GetMapping
 	public ResponseEntity<RespuestaBase> buscarTodo() {
 		try {
-			Iterable<PersonaEntity> listasPersonas = personaService.buscarTodos();
-			RespuestaCustomizada<Iterable<PersonaEntity>> respuesta = new RespuestaCustomizada<>();
+			Iterable<ProyectoEntity> listasPersonas = service.findAll();
+			RespuestaCustomizada<Iterable<ProyectoEntity>> respuesta = new RespuestaCustomizada<>();
 
 			respuesta.setCodigoEstatus(HttpStatus.OK.value());
 			respuesta.setMensaje("Consulta exitosa");
 			respuesta.setData(listasPersonas);
 			return new ResponseEntity<RespuestaBase>(respuesta, HttpStatus.OK);
-		} catch (NoExisteExcepcion e) {
+		} catch (Exception e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.NOT_FOUND);
 		}
@@ -48,68 +44,68 @@ public class PersonaController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<RespuestaBase> buscarPorId(@PathVariable int id) {
+	public ResponseEntity<RespuestaBase> buscarPorId(@PathVariable Integer id) {
 		try {
-			PersonaEntity personaEntity = personaService.buscarPorId(id);
-			RespuestaCustomizada<PersonaEntity> respuesta = new RespuestaCustomizada<>();
+			Optional<ProyectoEntity> personaEntity = service.findById(id);
+			RespuestaCustomizada<ProyectoEntity> respuesta = new RespuestaCustomizada<>();
 			respuesta.setCodigoEstatus(HttpStatus.OK.value());
 			respuesta.setMensaje("Consulta exitosa");
-			respuesta.setData(personaEntity);
+			respuesta.setData(personaEntity.get());
 			return new ResponseEntity<RespuestaBase>(respuesta, HttpStatus.OK);
-		} catch (NoExisteExcepcion e) {
+		} catch (Exception e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PostMapping
-	public ResponseEntity<RespuestaBase> crear(@RequestBody PersonaEntity entity) {
+	public ResponseEntity<RespuestaBase> crear(@RequestBody ProyectoEntity entity) {
 		try {
-			PersonaEntity personaEntity = personaApplication.save(entity);
+			ProyectoEntity personaEntity = service.save(entity);
 			
-			RespuestaCustomizada<PersonaEntity> respuesta = new RespuestaCustomizada<>();
+			RespuestaCustomizada<ProyectoEntity> respuesta = new RespuestaCustomizada<>();
 			respuesta.setCodigoEstatus(HttpStatus.CREATED.value());
 			respuesta.setMensaje("Persona creada");
 			respuesta.setData(personaEntity);
 			return new ResponseEntity<RespuestaBase>(respuesta, HttpStatus.CREATED);
-		} catch (YaExisteExcepcion | DataIncorrectaExcepcion e) {
+		} catch (Exception e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.CONFLICT.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.CONFLICT);
 		}
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<RespuestaBase> actualizar(@PathVariable int id, @RequestBody PersonaEntity entity) {
+	public ResponseEntity<RespuestaBase> actualizar(@PathVariable Integer id, @RequestBody ProyectoEntity entity) {
 		try {
-			PersonaEntity personaEntity = personaService.actualizar(id, entity);
-			RespuestaCustomizada<PersonaEntity> respuesta = new RespuestaCustomizada<>();
+			ProyectoEntity personaEntity = service.save(entity);
+			RespuestaCustomizada<ProyectoEntity> respuesta = new RespuestaCustomizada<>();
 			respuesta.setCodigoEstatus(HttpStatus.OK.value());
-			respuesta.setMensaje("Persona actualizada");
+			respuesta.setMensaje("Proyecto actualizado");
 			respuesta.setData(personaEntity);
 			return new ResponseEntity<RespuestaBase>(respuesta, HttpStatus.OK);
-		} catch (DataIncorrectaExcepcion e) {
+		} catch (Exception e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.CONFLICT.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.CONFLICT);
-		} catch (NoExisteExcepcion e) {
+		}
+		/*} catch (NoExisteExcepcion e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.NOT_FOUND);
-		}
+		}*/
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<RespuestaBase> eliminar(@PathVariable int id) {
+	public ResponseEntity<RespuestaBase> eliminar(@PathVariable Integer id) {
 
 		try {
-			personaService.eliminar(id);
+			service.delete(service.findById(id).get());
 			RespuestaBase respuesta = new RespuestaBase();
 			respuesta.setCodigoEstatus(HttpStatus.OK.value());
 			respuesta.setMensaje("Se elimino registro");
 			return new ResponseEntity<RespuestaBase>(respuesta, HttpStatus.OK);
-		} catch (NoExisteExcepcion e) {
+		} catch (Exception e) {
 			RespuestaBase respuestaBase = new RespuestaBase(HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return new ResponseEntity<RespuestaBase>(respuestaBase, HttpStatus.NOT_FOUND);
 		}
 
 	}
-
 }

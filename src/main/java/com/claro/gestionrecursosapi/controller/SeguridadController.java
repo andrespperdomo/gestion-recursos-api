@@ -17,11 +17,11 @@ public class SeguridadController {
 
 	@Autowired
 	private SeguridadApplication service;
-	
+	 
 	@PostMapping
 	public Integer POST(@RequestBody UsuarioEntity entity) {
 		return service.iniciarSesion(entity);
-	}
+	}   
 	
 	@GetMapping
 	public UsuarioEntity GET(@RequestParam String usuario) {

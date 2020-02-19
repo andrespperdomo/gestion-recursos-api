@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.claro.gestionrecursosapi.domain.imp.PersonaService;
+import com.claro.gestionrecursosapi.domain.IPersonaService;
 import com.claro.gestionrecursosapi.domain.UsuarioRolEnum;
 import com.claro.gestionrecursosapi.domain.UsuarioService;
 import com.claro.gestionrecursosapi.entity.PersonaEntity;
@@ -16,9 +16,9 @@ import com.google.common.hash.Hashing;
 
 @Service
 public class PersonaApplication {
-
+ 
 	@Autowired
-	private PersonaService personaService;
+	private IPersonaService personaService;    
 	@Autowired
 	private UsuarioService usuarioService;
 	
@@ -29,9 +29,12 @@ public class PersonaApplication {
 		
 		// Se crea el usuario por defecto
 		UsuarioEntity usuarioEntity = new UsuarioEntity();
-		usuarioEntity.setNombre(String.valueOf(entity.getNumerodocumento()));
+		usuarioEntity.setCodpersona(entity.getId());
+		usuarioEntity.setUsuario(entity.getNumerodocumento().toString());
+		usuarioEntity.setNombre(String.valueOf(entity.getNombre1() + " " + entity.getApellido1()));
 		usuarioEntity.setClave(encriptarTexto(entity.getNumerodocumento().toString()));
 		usuarioEntity.setCodusuariorol(UsuarioRolEnum.USUARIO.getValue());
+		usuarioEntity.setEstado("A");
 		usuarioService.save(usuarioEntity);		
 		
 		return entity;
@@ -40,5 +43,6 @@ public class PersonaApplication {
 	private String encriptarTexto(String texto) {
 		return Hashing.sha256().hashString(texto, StandardCharsets.UTF_8).toString();
 	}
+	
 	
 }

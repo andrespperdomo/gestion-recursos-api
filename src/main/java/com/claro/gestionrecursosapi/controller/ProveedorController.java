@@ -1,7 +1,5 @@
 package com.claro.gestionrecursosapi.controller;
 
-import java.util.Collection;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.claro.gestionrecursosapi.domain.IProveedorService;
-import com.claro.gestionrecursosapi.domain.imp.ProveedorService;
-import com.claro.gestionrecursosapi.entity.PersonaEntity;
 import com.claro.gestionrecursosapi.entity.ProveedorEntity;
 import com.claro.gestionrecursosapi.excepcion.DataIncorrectaExcepcion;
 import com.claro.gestionrecursosapi.excepcion.NoExisteExcepcion;
 import com.claro.gestionrecursosapi.excepcion.YaExisteExcepcion;
 import com.claro.gestionrecursosapi.model.RespuestaBase;
 import com.claro.gestionrecursosapi.model.RespuestaCustomizada;
-import com.claro.gestionrecursosapi.model.RespuestaProveedor;
 
 @RestController
 @RequestMapping("/api/v1/proveedor")

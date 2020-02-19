@@ -1,143 +1,96 @@
 package com.claro.gestionrecursosapi.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-/**
- * The persistent class for the presupuesto database table.
- * 
- */
 @Entity
 @Table(name="presupuesto")
-@NamedQuery(name="PresupuestoEntity.findAll", query="SELECT p FROM PresupuestoEntity p")
-public class PresupuestoEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class PresupuestoEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-
-	@Column(name="ELEMENTO_PEP")
-	private String elementoPep;
-
-	private Timestamp fechacreacion;
-
-	private Timestamp fechamodificacion;
-
+	private Integer id;
+	private Integer codempleadogerente;
+	private String elemento_pep;
 	private String pocisionpresupuestal;
-
-	@Column(name="PRESUPUESTO_COP")
-	private BigDecimal presupuestoCop;
-
-	@Column(name="PRESUPUESTO_USSD")
-	private BigDecimal presupuestoUssd;
-
-	@Column(name="SALDO_COP")
-	private BigDecimal saldoCop;
-
-	@Column(name="SALDO_USSD")
-	private BigDecimal saldoUssd;
-
-	//bi-directional many-to-one association to EmpleadoEntity
-	@ManyToOne
-	@JoinColumn(name="CODEMPLEADOGERENTE")
-	private EmpleadoEntity empleado;
-
-	public PresupuestoEntity() {
+	private BigDecimal presupuesto_cop;
+	private BigDecimal presupuesto_ussd;
+	private BigDecimal saldo_cop;
+	private BigDecimal saldo_ussd;
+	@CreationTimestamp
+	@Column(updatable = false)
+	private Date fechacreacion;
+	@UpdateTimestamp
+	private Date fechamodificacion;
+	public Integer getId() {
+		return id;
 	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getElementoPep() {
-		return this.elementoPep;
+	public Integer getCodempleadogerente() {
+		return codempleadogerente;
 	}
-
-	public void setElementoPep(String elementoPep) {
-		this.elementoPep = elementoPep;
+	public void setCodempleadogerente(Integer codempleadogerente) {
+		this.codempleadogerente = codempleadogerente;
 	}
-
-	public Timestamp getFechacreacion() {
-		return this.fechacreacion;
+	public String getElemento_pep() {
+		return elemento_pep;
 	}
-
-	public void setFechacreacion(Timestamp fechacreacion) {
-		this.fechacreacion = fechacreacion;
+	public void setElemento_pep(String elemento_pep) {
+		this.elemento_pep = elemento_pep;
 	}
-
-	public Timestamp getFechamodificacion() {
-		return this.fechamodificacion;
-	}
-
-	public void setFechamodificacion(Timestamp fechamodificacion) {
-		this.fechamodificacion = fechamodificacion;
-	}
-
 	public String getPocisionpresupuestal() {
-		return this.pocisionpresupuestal;
+		return pocisionpresupuestal;
 	}
-
 	public void setPocisionpresupuestal(String pocisionpresupuestal) {
 		this.pocisionpresupuestal = pocisionpresupuestal;
 	}
-
-	public BigDecimal getPresupuestoCop() {
-		return this.presupuestoCop;
+	public BigDecimal getPresupuesto_cop() {
+		return presupuesto_cop;
 	}
-
-	public void setPresupuestoCop(BigDecimal presupuestoCop) {
-		this.presupuestoCop = presupuestoCop;
+	public void setPresupuesto_cop(BigDecimal presupuesto_cop) {
+		this.presupuesto_cop = presupuesto_cop;
 	}
-
-	public BigDecimal getPresupuestoUssd() {
-		return this.presupuestoUssd;
+	public BigDecimal getPresupuesto_ussd() {
+		return presupuesto_ussd;
 	}
-
-	public void setPresupuestoUssd(BigDecimal presupuestoUssd) {
-		this.presupuestoUssd = presupuestoUssd;
+	public void setPresupuesto_ussd(BigDecimal presupuesto_ussd) {
+		this.presupuesto_ussd = presupuesto_ussd;
 	}
-
-	public BigDecimal getSaldoCop() {
-		return this.saldoCop;
+	public BigDecimal getSaldo_cop() {
+		return saldo_cop;
 	}
-
-	public void setSaldoCop(BigDecimal saldoCop) {
-		this.saldoCop = saldoCop;
+	public void setSaldo_cop(BigDecimal saldo_cop) {
+		this.saldo_cop = saldo_cop;
 	}
-
-	public BigDecimal getSaldoUssd() {
-		return this.saldoUssd;
+	public BigDecimal getSaldo_ussd() {
+		return saldo_ussd;
 	}
-
-	public void setSaldoUssd(BigDecimal saldoUssd) {
-		this.saldoUssd = saldoUssd;
+	public void setSaldo_ussd(BigDecimal saldo_ussd) {
+		this.saldo_ussd = saldo_ussd;
 	}
-
-	public EmpleadoEntity getEmpleado() {
-		return this.empleado;
+	public Date getFechacreacion() {
+		return fechacreacion;
 	}
-
-	public void setEmpleado(EmpleadoEntity empleado) {
-		this.empleado = empleado;
+	public void setFechacreacion(Date fechacreacion) {
+		this.fechacreacion = fechacreacion;
+	}
+	public Date getFechamodificacion() {
+		return fechamodificacion;
+	}
+	public void setFechamodificacion(Date fechamodificacion) {
+		this.fechamodificacion = fechamodificacion;
 	}
 
 }
