@@ -19,7 +19,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="lineasproducto")
-@NamedQuery(name="LineasproductoEntity.findAll", query="SELECT l FROM LineasproductoEntity l")
 public class LineasproductoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -69,8 +68,7 @@ public class LineasproductoEntity implements Serializable {
 	}
 	
 	public boolean isIncorrectData() {
-		return getNombre() ==null 
-				|| getFechacreacion() == null; 
+		return getNombre() ==null; 
 	}
 
 }
